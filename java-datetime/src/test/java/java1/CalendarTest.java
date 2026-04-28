@@ -3,6 +3,7 @@ package java1;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -12,11 +13,40 @@ import java.util.TimeZone;
 
 import static java.util.TimeZone.getTimeZone;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mockStatic;
 
 public class CalendarTest {
 
     private static final long ONE_HOUR_IN_MILLIS = 60 * 60 * 1000;
     private static final long ONE_DAY_IN_MILLIS = 24 * ONE_HOUR_IN_MILLIS;
+
+    @Test
+    @DisplayName("mock calendar")
+    void mock_calendar_test() {
+        // arrange
+        TimeZone taipei = TimeZone.getTimeZone("Asia/Taipei");
+        Calendar fixedTime = new Calendar.Builder()
+                .setTimeZone(taipei)
+                .setLocale(Locale.TRADITIONAL_CHINESE)
+                .setDate(1970, Calendar.JANUARY, 1)
+                .setTimeOfDay(8, 0, 0)
+                .build();
+
+        try (MockedStatic<Calendar> mockedCalendarClass = mockStatic(Calendar.class)) {
+            mockedCalendarClass.when(Calendar::getInstance).thenReturn(fixedTime);
+
+            // act
+            Calendar now = Calendar.getInstance();
+
+            // assert
+            assertThat(now.get(Calendar.YEAR)).isEqualTo(1970);
+            assertThat(now.get(Calendar.MONTH)).isEqualTo(Calendar.JANUARY);
+            assertThat(now.get(Calendar.DAY_OF_MONTH)).isEqualTo(1);
+            assertThat(now.getTime()).isEqualTo(fixedTime.getTime());
+            assertThat(now.getTimeInMillis()).isEqualTo(fixedTime.getTimeInMillis());
+            assertThat(now.getTimeZone()).isEqualTo(taipei);
+        }
+    }
 
     @Test
     @DisplayName("initial calendar from constructor")

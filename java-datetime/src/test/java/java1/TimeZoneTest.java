@@ -17,10 +17,16 @@ public class TimeZoneTest {
     private static final int ONE_HOUR_IN_MILLIS = 60 * 60 * 1000;
 
     @Test
-    @DisplayName("default time zone")
-    void default_time_zone_test() {
+    @DisplayName("set default time zone")
+    void set_default_time_zone_test() {
+        // arrange
+        TimeZone taipei = TimeZone.getTimeZone("Asia/Taipei");
+        TimeZone.setDefault(taipei);
+
+        // act
         TimeZone defaultTimeZone = getDefault();
 
+        // assert
         assertThat(defaultTimeZone.getID()).isEqualTo("Asia/Taipei");
     }
 
