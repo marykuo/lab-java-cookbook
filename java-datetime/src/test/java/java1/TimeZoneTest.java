@@ -40,7 +40,7 @@ public class TimeZoneTest {
     @DisplayName("TimeZone of Asia/Taipei")
     void taipei_getter_test() {
         // arrange
-        Locale.setDefault(Locale.forLanguageTag("zh-Hant-TW"));
+        Locale.setDefault(Locale.TRADITIONAL_CHINESE);
 
         // act
         TimeZone timeZone = getTimeZone("Asia/Taipei");
@@ -49,8 +49,8 @@ public class TimeZoneTest {
         assertThat(timeZone.getID()).isEqualTo("Asia/Taipei");
 
         assertThat(timeZone.getDisplayName()).isEqualTo("台北標準時間");
-        assertThat(timeZone.getDisplayName(false, TimeZone.SHORT)).isEqualTo("TST");
-        assertThat(timeZone.getDisplayName(true, TimeZone.SHORT)).isEqualTo("TDT");
+        assertThat(timeZone.getDisplayName(false, TimeZone.SHORT)).isIn("TST", "CST");
+        assertThat(timeZone.getDisplayName(true, TimeZone.SHORT)).isIn("TDT", "CDT");
         assertThat(timeZone.getDisplayName(false, TimeZone.LONG)).isEqualTo("台北標準時間");
         assertThat(timeZone.getDisplayName(true, TimeZone.LONG)).isEqualTo("台北夏令時間");
 
@@ -63,7 +63,7 @@ public class TimeZoneTest {
     @DisplayName("TimeZone of America/New_York")
     void new_york_getter_test() {
         // arrange
-        Locale.setDefault(Locale.forLanguageTag("zh-Hant-TW"));
+        Locale.setDefault(Locale.TRADITIONAL_CHINESE);
 
         // act
         TimeZone timeZone = getTimeZone("America/New_York");

@@ -15,6 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CalendarTest {
 
+    private static final long ONE_HOUR_IN_MILLIS = 60 * 60 * 1000;
+    private static final long ONE_DAY_IN_MILLIS = 24 * ONE_HOUR_IN_MILLIS;
+
     @Test
     @DisplayName("initial calendar from constructor")
     void initial_calendar_from_constructor_test() {
@@ -29,8 +32,6 @@ public class CalendarTest {
      */
     @Nested
     class calendar_week_definition_test {
-
-        private static final long ONE_DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 
         private static final long FIRST_DAY_IS_MONDAY = LocalDate.of(1973, 1, 1).toEpochDay() * ONE_DAY_IN_MILLIS;
         private static final long FIRST_DAY_IS_TUESDAY = LocalDate.of(1974, 1, 1).toEpochDay() * ONE_DAY_IN_MILLIS;
@@ -161,8 +162,9 @@ public class CalendarTest {
     void initial_calendar_by_day_of_month_test() {
         Calendar calendar = new Calendar.Builder()
                 .setDate(1970, Calendar.JANUARY, 1)
+                .setTimeOfDay(8, 0, 0)
                 .build();
-        assertThat(calendar.getTime().toString()).isEqualTo("Mon Dec 29 00:00:00 CST 1969");
+        assertThat(calendar.getTimeInMillis()).isEqualTo(0L);
     }
 
     @Test
